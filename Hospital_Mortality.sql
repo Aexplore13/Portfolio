@@ -151,3 +151,4 @@ order by Highest_Hospital_Death_Prob desc
 limit 10;
 
 -- What was the average length of stay at each ICU for patients who survived and those who didn't? 
+-- a new change
