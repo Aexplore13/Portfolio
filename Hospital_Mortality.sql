@@ -151,4 +151,28 @@ order by Highest_Hospital_Death_Prob desc
 limit 10;
 
 -- What was the average length of stay at each ICU for patients who survived and those who didn't? 
--- a new change
+Select icu_id,
+round(avg(case when hospital_death=1 then pre_icu_los_days end),2) as Avg_length_of_stay_who_died,
+round(avg(case when hospital_death=0 then pre_icu_los_days end),2) as Avg_length_of_stay_who_survived
+from ihm
+group by icu_id
+order  by icu_id asc;
+
+-- What was the average BMI for patients that died based on ethnicity? (excluding missing or null values)
+Select ethnicity, round(avg(bmi),2) as Avg_BMI
+from ihm
+where bmi!=0 and hospital_death=1
+group by ethnicity;
+
+-- What was the death percentage for each ethnicity? 
+Select Ethnicity,concat(round(sum(case when hospital_death=1 then 1 end)*100/count(*),2),"","%") as Death_Percentage_of_each_ethnicity
+from ihm
+group by ethnicity;
+
+SELECT
+    ethnicity,
+    ROUND(COUNT(CASE WHEN hospital_death = 1 THEN 1 END) * 100 / (SELECT COUNT(*) FROM ihm), 2) AS death_percentage
+FROM ihm
+
+
+
